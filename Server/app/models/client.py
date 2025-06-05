@@ -15,7 +15,7 @@ class Client(db.Model):
 
     def to_dict(self, orders:bool=False):
         client ={
-            "id":self.name,
+            "id":self.id,
             "name":self.name,
             "address":self.address,
             "created_at":self.created_at
