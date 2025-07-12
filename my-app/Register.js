@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -10,69 +10,73 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from "@react-navigation/native";
-import axios from 'axios';
+import axios from 'axios'; // ✅ Asegúrate de tener esto instalado
 
-const LoginScreen = () => {
-const navigation = useNavigation();
-  const [data, setData] = useState({});
-  const onChange = (name, value) => {
-    setData({ ...data, [name]: value });
-  };
 
-  const onSubmit = async () => {
-    try {
-      //data.rol = "empleado";
-      const res = await axios.post("https://mfxknm6t-5000.usw3.devtunnels.ms/users/login", data);
-      const user = res.data.user;
-      //user.logined = true
-      navigation.navigate("DashboardUser")
+const Register = () => {
+  const [data, setData] = useState({
+        name: '',
+        email: '',
+        password: ''
+    });
+    
+    const onChangeRegister = (key, value) => {
+      setData(prevData => ({ ...prevData, [key]: value }));
+    };
+    
+    const navigation = useNavigation();
 
-      Alert.alert("¡BIENVENIDO!");
-    } catch (error) {
-      Alert.alert("Datos incorrectos, intenta nuevamente.");
-    }
-  };
+    const onSubmit = async () => {
+        try {
+            await axios.post('https://mfxknm6t-5000.usw3.devtunnels.ms/users/register', data);
+            Alert.alert('¡Éxito!', 'Registrado con éxito');
+            navigation.navigate('Home');
+        } catch (error) {
+            Alert.alert('Error', 'Hubo un error al registrarse');
+        }
+    };
 
-  
+   
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Welcome back</Text>
+      <Text style={styles.title}>Sign Up</Text>
       <View style={styles.form}>
+        <TextInput
+          style={styles.input}
+          placeholder="Name"
+          placeholderTextColor="#aaa"
+          onChangeText={(value) => onChangeRegister('name', value)}
+          value={data.name}  
+        />
         <TextInput
           style={styles.input}
           placeholder="Email"
           placeholderTextColor="#aaa"
-          onChangeText={(value) => onChange("email", value)}
-          value={data.email || ""}
-          keyboardType="email-address"
+          onChangeText={(value) => onChangeRegister('email', value)}
+          value={data.email}
         />
-      
         <TextInput
           style={styles.input}
           placeholder="Password"
           secureTextEntry
           placeholderTextColor="#aaa"
-          onChangeText={(value) => onChange("password", value)}
-          value={data.password || ""}
+          onChangeText={(value) => onChangeRegister('password', value)}
+          value={data.password}
         />
-        
        
         <TouchableOpacity style={styles.loginButton} onPress={onSubmit}>
-          <Text style={styles.loginText}>Log in</Text>
+          <Text style={styles.loginText}>Send</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.signUp}  onPress={()=>navigation.navigate("Register")}>
-        Don't have an account? <Text style={styles.signUpLink}>Sign up</Text>
-      </TouchableOpacity>
-
+      
     
       
     </SafeAreaView>
   );
 };
 
-export default LoginScreen;
+export default Register;
 
 const styles = StyleSheet.create({
   container: {

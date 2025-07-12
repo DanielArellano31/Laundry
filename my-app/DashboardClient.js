@@ -8,54 +8,21 @@ import {
   StyleSheet,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import searchbyname from './SearchByName';
+import { useNavigation } from '@react-navigation/native';
 
 const DashboardClient = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
-
- const openModal = (key, label) => {
-  setModalType({ key, label });
-  setModalVisible(true);
-};
-
-const closeModal = () => {
-  setModalVisible(false);
-  setModalType({ key: '', label: '' });
-};
-
-
- const renderModalFields = () => (
-  <View style={styles.modalView}>
-    <Text style={styles.modalTitle}>{modalType.label}</Text>
-
-    <TextInput style={styles.input} placeholder="Campo 1" />
-
-    {modalType.key === 'create' && (
-      <>
-        <TextInput style={styles.input} placeholder="Campo 2" />
-        <TextInput style={styles.input} placeholder="Campo 3" />
-      </>
-    )}
-
-    <TouchableOpacity style={styles.modalButton} onPress={closeModal}>
-      <Text style={styles.modalButtonText}>Enviar</Text>
-    </TouchableOpacity>
-  </View>
-);
+  const navigation = useNavigation()
+ 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Dashboard</Text>
-<TouchableOpacity
-  style={styles.actionButton}
-  onPress={() => openModal('create', 'Create Client')}
->
-  <Icon name="user" size={20} color="#fff" />
-  <Text style={styles.buttonText}>Create Client</Text>
-</TouchableOpacity>
 
 <TouchableOpacity
   style={styles.actionButton}
-  onPress={() => openModal('searchName', 'Search by name')}
+  onPress={()=>navigation.navigate("searchbyname")}
 >
   <Icon name="refresh" size={20} color="#fff" />
   <Text style={styles.buttonText}>Search by name</Text>
@@ -63,7 +30,7 @@ const closeModal = () => {
 
 <TouchableOpacity
   style={styles.actionButton}
-  onPress={() => openModal('searchNumber', 'Search by number')}
+  onPress={()=>navigation.navigate("searchbynumber")}
 >
   <Icon name="file-text" size={20} color="#fff" />
   <Text style={styles.buttonText}>Search by number</Text>
@@ -71,7 +38,7 @@ const closeModal = () => {
 
 <TouchableOpacity
   style={styles.actionButton}
-  onPress={() => openModal('create', 'Update Client')}
+  onPress={()=>navigation.navigate("updateclient")}
 >
   <Icon name="file-text" size={20} color="#fff" />
   <Text style={styles.buttonText}>Update Client</Text>
@@ -79,16 +46,12 @@ const closeModal = () => {
 
 <TouchableOpacity
   style={styles.actionButton}
-  onPress={() => openModal('delete', 'Delete Client')}
+  onPress={()=>navigation.navigate("deleteclient")}
 >
   <Icon name="file-text" size={20} color="#fff" />
   <Text style={styles.buttonText}>Delete Client</Text>
 </TouchableOpacity>
-      <Modal transparent visible={modalVisible} animationType="slide">
-        <View style={styles.modalBackground}>
-          {renderModalFields()}
-        </View>
-      </Modal>
+     
     </View>
   );
 };
